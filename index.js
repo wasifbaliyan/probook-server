@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 const auth = require("./routes/auth.routes");
+const posts = require("./routes/posts.routes");
 
 const verifyAuthentication = require("./middlewares/auth.middleware");
 
@@ -22,6 +23,7 @@ app.get("/", (req, res) => {
 
 app.use("/auth", auth);
 app.use(verifyAuthentication);
+app.use("/api/posts", posts);
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => console.log(`Listening on port ${port}`));
