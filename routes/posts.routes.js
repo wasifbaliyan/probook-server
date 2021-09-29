@@ -15,7 +15,7 @@ router.get("/", async (req, res) => {
     });
     res.status(200).json({
       response: {
-        updatedPosts,
+        posts: updatedPosts,
       },
       message: "Posts fetched successfully.",
     });
