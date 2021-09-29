@@ -4,6 +4,8 @@ require("dotenv").config();
 const auth = require("./routes/auth.routes");
 const posts = require("./routes/posts.routes");
 const comments = require("./routes/comments.routes");
+const followings = require("./routes/followings.routes");
+const followers = require("./routes/followers.routes");
 
 const verifyAuthentication = require("./middlewares/auth.middleware");
 
@@ -26,6 +28,8 @@ app.use("/auth", auth);
 app.use(verifyAuthentication);
 app.use("/api/posts", posts);
 app.use("/api/comments", comments);
+app.use("/api/followers", followers);
+app.use("/api/followings", followings);
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => console.log(`Listening on port ${port}`));
