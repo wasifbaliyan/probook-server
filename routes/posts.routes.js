@@ -6,7 +6,10 @@ const Like = require("../models/like.model");
 router.get("/", async (req, res) => {
   try {
     const userId = req.user._id;
-    const posts = await Post.find();
+    const posts = await Post.find()
+      .sort({ createdAt: -1 })
+      .populate("author")
+      .exec();
     const updatedPosts = posts.map((post) => {
       if (post.likes.includes(userId)) {
         post.isLiked = true;
@@ -18,6 +21,30 @@ router.get("/", async (req, res) => {
         posts: updatedPosts,
       },
       message: "Posts fetched successfully.",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Something went wrong.",
+      error: error.message,
+    });
+  }
+});
+
+router.get("/:id", async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const id = req.params.id;
+    const post = await Post.findOne({ _id: id }).populate("author").exec();
+    if (post.likes.includes(userId)) {
+      post.isLiked = true;
+    }
+
+    res.status(200).json({
+      response: {
+        post,
+      },
+      message: "Post fetched successfully.",
     });
   } catch (error) {
     console.error(error);
