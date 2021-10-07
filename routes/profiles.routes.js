@@ -1,16 +1,19 @@
 const express = require("express");
 const router = express.Router();
 const Profile = require("../models/profile.model");
+const Post = require("../models/post.model");
 
-router.get("/:profileId", async (req, res) => {
+router.get("/:userId", async (req, res) => {
   try {
-    const profileId = req.params.profileId;
-    const profile = await Profile.findOne({ _id: profileId });
+    const userId = req.params.userId;
+    const profile = await Profile.findOne({ userId }).populate("userId").exec();
     if (!profile) {
       return res.status(404).json({
         message: "Profile does not exist.",
       });
     }
+    const posts = await Post.find({ author: userId }).populate("author").exec();
+    profile.posts = posts;
     res.status(200).json({
       message: "Profile fetched successfully.",
       profile,

@@ -13,12 +13,12 @@ const profileSchema = new Schema({
       ref: "Post",
     },
   ],
-  website: URL,
+  website: String,
   location: {
     type: String,
     default: "The Universe",
   },
-  bio: String,
+  bio: { type: String, default: "This is bio." },
   dob: {
     type: Date,
   },

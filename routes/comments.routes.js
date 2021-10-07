@@ -11,7 +11,9 @@ router.get("/:postId", async (req, res) => {
         message: "The post you were looking for is not available.",
       });
     }
-    const comments = await Comment.find({ postId: req.params.postId });
+    const comments = await Comment.find({ postId: req.params.postId })
+      .populate("author")
+      .exec();
     res.status(200).json({
       message: "Comments fetched successfully.",
       response: {

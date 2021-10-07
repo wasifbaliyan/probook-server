@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const User = require("../models/user.model");
 const generateAuthToken = require("../utils/generateAuthToken");
 const router = express.Router();
+const Profile = require("../models/profile.model");
 
 router.post("/register", async (req, res) => {
   try {
@@ -20,12 +21,14 @@ router.post("/register", async (req, res) => {
       await user.save();
 
       const token = generateAuthToken(user._id);
-
+      const profile = await new Profile({ userId: user._id });
+      await profile.save();
       return res.status(201).json({
         message: "User created successfully.",
         response: {
           name: user.name,
           email: user.email,
+          _id: user._id,
           token,
         },
       });
@@ -63,6 +66,7 @@ router.post("/login", async (req, res) => {
           token,
           name: foundUser.name,
           email: foundUser.email,
+          _id: foundUser._id,
         },
       });
     }

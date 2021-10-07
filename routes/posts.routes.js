@@ -106,10 +106,10 @@ router.delete("/:id", async (req, res) => {
 });
 
 // like and unlike a post
-router.post("/:id/likes", async (req, res) => {
+router.post("/likes", async (req, res) => {
   try {
     const userId = req.user._id;
-    const post = await Post.findOne({ _id: req.params.id });
+    const post = await Post.findOne({ _id: req.body.id });
     if (!post) {
       return res.status(404).json({
         message: "Post couldn't be found.",
