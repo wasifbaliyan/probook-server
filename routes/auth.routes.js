@@ -4,6 +4,9 @@ const User = require("../models/user.model");
 const generateAuthToken = require("../utils/generateAuthToken");
 const router = express.Router();
 const Profile = require("../models/profile.model");
+const Follower = require("../models/follower.model");
+const Following = require("../models/following.model");
+const verifyAuthentication = require("../middlewares/auth.middleware");
 
 router.post("/register", async (req, res) => {
   try {
@@ -14,15 +17,19 @@ router.post("/register", async (req, res) => {
         message: "User with this email already exists.",
       });
     } else {
-      const user = await new User(req.body);
+      let user = await new User(req.body);
       const salt = await bcrypt.genSalt(10);
 
       user.password = await bcrypt.hash(user.password, salt);
-      await user.save();
+      user = await user.save();
 
       const token = generateAuthToken(user._id);
       const profile = await new Profile({ userId: user._id });
+      const followers = await new Follower({ userId: user._id });
+      const followings = await new Following({ userId: user._id });
       await profile.save();
+      await followers.save();
+      await followings.save();
       return res.status(201).json({
         message: "User created successfully.",
         response: {
@@ -33,6 +40,23 @@ router.post("/register", async (req, res) => {
         },
       });
     }
+  } catch (error) {
+    return res.status(500).json({
+      message: "Something went wrong!",
+      error: error.message,
+    });
+  }
+});
+
+router.get("/users", verifyAuthentication, async (req, res) => {
+  try {
+    const users = await User.find();
+    res.status(200).json({
+      response: {
+        users,
+      },
+      message: "Users fetched successfully.",
+    });
   } catch (error) {
     return res.status(500).json({
       message: "Something went wrong!",

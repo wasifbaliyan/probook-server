@@ -2,9 +2,9 @@ const express = require("express");
 const router = express.Router();
 const Follower = require("../models/follower.model");
 
-router.get("/", async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
-    const userId = req.user._id;
+    const userId = req.params.id;
     const followers = await Follower.find({ userId });
     res.status(200).json({
       message: "Followers fetched successfully.",
@@ -23,11 +23,11 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const userId = req.user._id;
-    const follower = await new Follower({
+    const userId = req.body.userId;
+    const follower = await Follower.findOne({
       userId,
-      followerId: req.body.followerId,
     });
+    follower.followerId.push(req.body.followerId);
     await follower.save();
     res.status(201).json({
       message: "Follower added successfully.",
