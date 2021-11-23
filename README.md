@@ -1,5 +1,3 @@
-# Probook - A social media app
-
 # Probook App | A Social Media App
 
 ![Logo](https://res.cloudinary.com/dnboldv5r/image/upload/v1633739721/probook/Probook_kybzoe.png)
