@@ -30,7 +30,7 @@ router.put("/:profileId", async (req, res) => {
   try {
     const profileId = req.params.profileId;
     const updatedData = req.body;
-    const profile = await Profile.findOneAndDelete(
+    const profile = await Profile.findOneAndUpdate(
       { _id: profileId },
       { ...updatedData },
       { new: true }

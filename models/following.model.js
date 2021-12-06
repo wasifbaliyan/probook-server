@@ -7,12 +7,10 @@ const followingSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
-  followingId: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-    },
-  ],
+  followingId: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 
 module.exports = mongoose.model("Following", followingSchema);

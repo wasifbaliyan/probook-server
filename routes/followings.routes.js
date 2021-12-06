@@ -24,8 +24,10 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const userId = req.body.userId;
-    const following = await Following.findOne({ userId });
-    following.followingId.push(req.body.followingId);
+    const following = await new Following({
+      userId,
+      followingId: req.body.followingId,
+    });
     await following.save();
     res.status(201).json({
       message: "following added successfully.",
@@ -42,16 +44,22 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/", async (req, res) => {
   try {
-    const id = req.params.id;
+    const id = req.query.followingId;
+    const userId = req.query.userId;
 
-    const following = await Following.findOneAndDelete({ _id: id });
+    const following = await Following.findOneAndDelete({
+      userId,
+      followingId: id,
+    });
+    console.log(following);
     if (!following) {
       return res.status(404).json({
         message: "following does not exist.",
       });
     }
+
     res.status(200).json({
       message: "following removed successfully.",
       response: {

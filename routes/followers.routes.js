@@ -24,10 +24,10 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const userId = req.body.userId;
-    const follower = await Follower.findOne({
+    const follower = await new Follower({
       userId,
+      followerId: req.body.followerId,
     });
-    follower.followerId.push(req.body.followerId);
     await follower.save();
     res.status(201).json({
       message: "Follower added successfully.",
@@ -47,13 +47,18 @@ router.post("/", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   try {
     const id = req.params.id;
+    const userId = req.query.userId;
 
-    const follower = await Follower.findOneAndDelete({ _id: id });
+    const follower = await Follower.findOneAndDelete({
+      userId,
+      followerId: id,
+    });
     if (!follower) {
       return res.status(404).json({
         message: "follower does not exist.",
       });
     }
+
     res.status(200).json({
       message: "Follower removed successfully.",
       response: {
