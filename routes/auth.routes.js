@@ -25,11 +25,7 @@ router.post("/register", async (req, res) => {
 
       const token = generateAuthToken(user._id);
       const profile = await new Profile({ userId: user._id });
-      const followers = await new Follower({ userId: user._id });
-      const followings = await new Following({ userId: user._id });
       await profile.save();
-      await followers.save();
-      await followings.save();
       return res.status(201).json({
         message: "User created successfully.",
         response: {
