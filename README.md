@@ -20,7 +20,7 @@ An social media platform built using ReactJS, Redux Toolkit,Material UI, Node, E
 
 ## Demo
 
-Live app link:
+Live app link: https://probookhq.netlify.app/
 
 ## Run Locally
 
