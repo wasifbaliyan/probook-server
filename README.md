@@ -27,13 +27,13 @@ Live app link:
 Clone the project
 
 ```bash
-  git clone https://github.com/wasifbaliyan/probook-client.git
+  git clone https://github.com/wasifbaliyan/probook-server.git
 ```
 
 Go to the project directory
 
 ```bash
-  cd probook-client
+  cd probook-server
 ```
 
 Install dependencies
@@ -42,7 +42,14 @@ Install dependencies
   npm install
 ```
 
-Start react app
+Add .env file
+
+```bash
+  DB_URL=your mongodb address
+  JWT_KEY=set your private jwt key
+```
+
+Start probook server at port 3001
 
 ```bash
   npm start
